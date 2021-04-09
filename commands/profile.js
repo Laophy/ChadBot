@@ -18,26 +18,23 @@ module.exports = {
 
       rows.forEach((row) => {
         if (row.userID != userID) {
-          message.channel.send("No profile");
           hasProfile = false;
         } else {
-          message.channel.send("A profile has been found");
           hasProfile = true;
         }
       });
       if (hasProfile == false) {
-        message.channel.send("I just tried to create another profile...");
         createProfile();
       }
     });
+
     //Create the profile
     function createProfile() {
-      message.channel.send("createProfile();");
       var sendNewProfile = `INSERT INTO user_profile (userID, coins, bank, isAdmin, nick) VALUES (${userID}, 1000, 0, 0, '${newUsername}')`;
 
       connection_db.query(sendNewProfile, function (err, result) {
         //if (err) throw err;
-        console.log(`Created a profile for user: ${username}`);
+        console.log(`Created a profile for user: ${newUsername}`);
       });
     }
   },

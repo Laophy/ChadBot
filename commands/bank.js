@@ -10,14 +10,26 @@ module.exports = {
 
     var newUsername = username.substring(0, username.length - 5);
     let coins;
+    let bank;
 
     connection_db.query("SELECT * FROM user_profile", (err, rows) => {
       //if (err) throw err;
       rows.forEach((row) => {
         if (row.userID == userID) {
           coins = row.coins;
-          console.log(coins + " " + username);
-          bankEmbed.addFields({ name: "Coins:", value: ":dollar: $" + coins });
+          bank = row.bank;
+          bankEmbed.addFields({
+            name: "Coins:",
+            value:
+              ":dollar: $" +
+              coins.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+          });
+          bankEmbed.addFields({
+            name: "Bank Total:",
+            value:
+              ":dollar: $" +
+              bank.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+          });
           if (row.isAdmin == 1) {
             bankEmbed.setAuthor(
               newUsername + "(Admin)" + " Bank",
