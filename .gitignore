@@ -1,0 +1,2 @@
+.env
+../database/connection_db.js
