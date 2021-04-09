@@ -11,7 +11,6 @@ module.exports = {
 
     let coins;
     let bank;
-    let primaryKey;
 
     connection_db.query(`SELECT * FROM user_profile`, (err, profileRow) => {
       if (err) {

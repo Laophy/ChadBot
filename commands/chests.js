@@ -22,7 +22,13 @@ module.exports = {
             .addFields(
               { name: "Name: ", value: row.itemName, inline: true },
               { name: "ID: ", value: row._itemID, inline: true },
-              { name: "Value: ", value: row.itemValue, inline: true }
+              {
+                name: "Value: ",
+                value: `$${row.itemValue
+                  .toString()
+                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`,
+                inline: true,
+              }
             );
           message.channel.send(newEmbed);
           //message.channel.send(

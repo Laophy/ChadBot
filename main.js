@@ -71,12 +71,10 @@ client.on("message", (message) => {
     command === "crates" ||
     command === "crate"
   ) {
-    client.commands.get("chests").execute(message, args, Discord, profileData);
+    client.commands.get("chests").execute(message, args, Discord);
   }
   if (command === "commands") {
-    client.commands
-      .get("commands")
-      .execute(message, args, Discord, profileData);
+    client.commands.get("commands").execute(message, args, Discord);
   }
 });
 
