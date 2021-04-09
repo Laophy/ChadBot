@@ -9,38 +9,34 @@ module.exports = {
     //Code to run after command.
     const username = message.member.user.tag;
     const userID = message.member.id;
-    message.channel.send("Profile command ran....");
-    global.hasProfile = false;
+    var hasProfile = true;
+
+    var newUsername = username.substring(0, username.length - 5);
 
     connection_db.query("SELECT userID FROM user_profile", (err, rows) => {
       if (err) throw err;
 
       rows.forEach((row) => {
-        if (row.userID == userID) {
-          message.channel.send("yes profile found");
-          global.hasProfile = true;
-        } else {
-          message.channel.send("no profile found.");
-          global.hasProfile = false;
+        if (row.userID != userID) {
+          message.channel.send("No profile");
+          hasProfile = false;
+        }else {
+          message.channel.send("A profile has been found");
+          hasProfile = true;
         }
       });
+      if(hasProfile == false){
+        createProfile();
+      }
     });
     //Create the profile
     function createProfile() {
-      message.channel.send(
-        "CreateProfile function is running.. Profile should be in DB now..."
-      );
-      var sendNewProfile = `INSERT INTO user_profile (userID, coins, bank) VALUES (${userID}, 1000, 0)`;
+      var sendNewProfile = `INSERT INTO user_profile (userID, coins, bank, isAdmin, nick) VALUES (${userID}, 1000, 0, 0, '${newUsername}')`;
 
       connection_db.query(sendNewProfile, function (err, result) {
         if (err) throw err;
-        console.log("Just inserted a new row...");
+        console.log(`Created a profile for user: ${username}`);
       });
-    }
-    message.channel.send(` 1 ${global.hasProfile}`);
-    if (global.hasProfile == false) {
-      message.channel.send(`2 ${global.hasProfile}`);
-      createProfile();
     }
   },
 };

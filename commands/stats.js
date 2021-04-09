@@ -4,6 +4,7 @@ module.exports = {
     execute(message, args, Discord){
         const username = message.member.user.tag;
         const userID = message.member.id;
+        var newUsername = username.substring(0, username.length - 5);
 
         global.level = 1;
         global.health = 100;
@@ -21,7 +22,7 @@ module.exports = {
         .setAuthor(username + 's Stats', 'https://cdn3.iconfinder.com/data/icons/glypho-travel/64/history-swords-crossed-512.png', "")
         .setThumbnail('https://cdn3.iconfinder.com/data/icons/glypho-travel/64/history-swords-crossed-512.png')
         .addFields(
-            {name: 'Player Name:', value: username},
+            {name: 'Player Name:', value: newUsername},
             {name: 'Player Level:', value: global.level},
             { name: '\u200B', value: '\u200B' } //Creates a space / gap
         )
