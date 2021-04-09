@@ -10,58 +10,85 @@ module.exports = {
 
     var colorWin = "#97E37F";
     var colorLose = "#E38B7F";
-    var randomNumber = (Math.random(1, 100) * 100).toFixed(2);
+    let randomNumber = Math.floor(Math.random() * 100);
+    let betAmount = parseInt(message.content.substring(5));
+    let coins;
+    let bank;
     var backgroundColor;
+    let canGamble = true;
 
-    diceAmount = 100;
+    let totalWin;
 
-    var cashWon;
+    connection_db.query(`SELECT * FROM user_profile`, (err, profileRow) => {
+      if (err) {
+        throw err;
+      }
+      profileRow.forEach((profile) => {
+        if (profile.userID == userID) {
+          const diceEmbed = new Discord.MessageEmbed()
+            .setColor(backgroundColor) //Green
+            .setTitle("Dice Game!")
+            .setDescription("Rolled a random number! You got: " + randomNumber)
+            .setFooter("User ID: " + userID);
+          coins = parseInt(profile.coins);
 
-    if (randomNumber >= 50) {
-      backgroundColor = colorWin;
-      cashWon = diceAmount + (diceAmount * randomNumber) / 100;
-      global.cash = global.cash + cashWon;
-    } else if (randomNumber <= 50) {
-      backgroundColor = colorLose;
-      global.cash = global.cash - diceAmount;
-      cashWon = -diceAmount;
-    }
-    if (global.cash < 0) {
-      global.cash = 0;
-      cashWon = 0;
-    }
+          if (coins >= betAmount) {
+            //They have enought to dice
+            if (randomNumber >= 52) {
+              diceEmbed.setColor(colorWin); //Green
+              coins += (betAmount * randomNumber) / 100;
+              totalWin = (betAmount * randomNumber) / 100;
+              diceEmbed.addFields({
+                name: "Cash Won or Lost:",
+                value:
+                  ":dollar: $" +
+                  totalWin
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+              });
+              diceEmbed.addFields({
+                name: "Total Cash:",
+                value:
+                  ":dollar: $" +
+                  coins
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+              });
+            } else {
+              diceEmbed.setColor(colorLose); //Red
+              coins = coins - betAmount;
+              diceEmbed.addFields({
+                name: "Cash Won or Lost:",
+                value:
+                  ":dollar: -$" +
+                  betAmount
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+              });
+              diceEmbed.addFields({
+                name: "Total Cash:",
+                value:
+                  ":dollar: $" +
+                  coins
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+              });
+            }
+          } else {
+            canGamble = false;
+          }
 
-    connection_db.query("SELECT * FROM user_profile", (err, rows) => {
-      //if (err) throw err;
-      rows.forEach((row) => {
-        if (row.userID == userID) {
-          coins = row.coins;
-          bank = row.bank;
-          console.log(coins + " " + username);
-          bankEmbed.addFields({
-            name: "Coins:",
-            value:
-              ":dollar: $" +
-              coins.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
-          });
-
-          message.channel.send(bankEmbed);
+          connection_db.query(
+            `UPDATE user_profile SET coins=${coins} WHERE userID='${userID}'`,
+            function (err, result) {}
+          );
+          if (canGamble) {
+            message.channel.send(diceEmbed);
+          } else {
+            message.channel.send("Not enough coins to dice that much!");
+          }
         }
       });
     });
-
-    //Embed sent after calculations above
-    const diceEmbed = new Discord.MessageEmbed()
-      .setColor(backgroundColor) //Green
-      .setTitle("Dice Game!")
-      .setDescription("Rolled a random number! You got: " + randomNumber)
-      /*.addFields(
-            {name: 'Cash:', value: ':dollar: $' + cash},
-        )
-        */
-      .addFields({ name: "Cash Won or Lost:", value: ":dollar: $" + cashWon })
-      .setFooter("User ID: " + userID);
-
-    message.channel.send(diceEmbed);
   },
 };

@@ -17,6 +17,11 @@ module.exports = {
           inline: true,
         },
         {
+          name: "Create a Profile: ",
+          value: "=profile",
+          inline: true,
+        },
+        {
           name: "Help: ",
           value: "=help",
           inline: true,
