@@ -13,8 +13,8 @@ module.exports = {
 
     var newUsername = username.substring(0, username.length - 5);
 
-    connection_db.query("SELECT userID FROM user_profile", (err, rows) => {
-      if (err) throw err;
+    connection_db.query("SELECT * FROM user_profile", (err, rows) => {
+      //if (err) throw err;
 
       rows.forEach((row) => {
         if (row.userID != userID) {
@@ -26,15 +26,17 @@ module.exports = {
         }
       });
       if(hasProfile == false){
+        message.channel.send("I just tried to create another profile...");
         createProfile();
       }
     });
     //Create the profile
     function createProfile() {
+      message.channel.send("createProfile();");
       var sendNewProfile = `INSERT INTO user_profile (userID, coins, bank, isAdmin, nick) VALUES (${userID}, 1000, 0, 0, '${newUsername}')`;
 
       connection_db.query(sendNewProfile, function (err, result) {
-        if (err) throw err;
+        //if (err) throw err;
         console.log(`Created a profile for user: ${username}`);
       });
     }
