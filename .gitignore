@@ -1,2 +1,2 @@
 .env
-../database/connection_db.js
+../ChadBot/database/connection_db
