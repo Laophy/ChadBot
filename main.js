@@ -76,6 +76,9 @@ client.on("message", (message) => {
   if (command === "commands") {
     client.commands.get("commands").execute(message, args, Discord);
   }
+  if (command === "give") {
+    client.commands.get("give").execute(message, args, Discord);
+  }
 });
 
 client.on("ready", () => console.log(`${client.user.tag} logged in.`));
