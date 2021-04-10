@@ -36,8 +36,8 @@ module.exports = {
             //They have enought to dice
             if (randomNumber >= 52) {
               diceEmbed.setColor(colorWin); //Green
-              coins += (betAmount * randomNumber) / 100;
-              totalWin = (betAmount * randomNumber) / 100;
+              coins += parseInt((betAmount * randomNumber) / 100);
+              totalWin = parseInt((betAmount * randomNumber) / 100);
               diceEmbed.addFields({
                 name: "Cash Won or Lost:",
                 value:
@@ -80,6 +80,12 @@ module.exports = {
 
           connection_db.query(
             `UPDATE user_profile SET coins=${coins} WHERE userID='${userID}'`,
+            function (err, result) {}
+          );
+          connection_db.query(
+            `UPDATE user_exp SET gambling=gambling+${
+              betAmount / 2
+            } WHERE userID='${userID}'`,
             function (err, result) {}
           );
           if (canGamble) {

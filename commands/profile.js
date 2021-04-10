@@ -31,9 +31,12 @@ module.exports = {
     //Create the profile
     function createProfile() {
       var sendNewProfile = `INSERT INTO user_profile (userID, coins, bank, isAdmin, nick) VALUES (${userID}, 1000, 0, 0, '${newUsername}')`;
+      var createExpLevels = `INSERT INTO user_exp (userID, nick) VALUES (${userID}, '${newUsername}')`;
 
+      connection_db.query(createExpLevels, function (err, result) {
+        console.log(`Created a exp file for user: ${newUsername}`);
+      });
       connection_db.query(sendNewProfile, function (err, result) {
-        //if (err) throw err;
         console.log(`Created a profile for user: ${newUsername}`);
       });
     }

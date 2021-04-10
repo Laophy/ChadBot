@@ -38,7 +38,7 @@ module.exports = {
         },
         {
           name: "Bank ",
-          value: "=b, =bank, =inventory",
+          value: "=b, =bank, =inventory, =withdraw AMT, =deposit AMT",
           inline: true,
         },
         {
@@ -63,7 +63,17 @@ module.exports = {
         },
         {
           name: "Chests: ",
-          value: "=chests",
+          value: "=chests, =chest, =lootbox, =crates, =crate",
+          inline: true,
+        },
+        {
+          name: "Fish: ",
+          value: "=fish",
+          inline: true,
+        },
+        {
+          name: "Leaderboard: ",
+          value: "=lb, =leaderboard",
           inline: true,
         }
       )

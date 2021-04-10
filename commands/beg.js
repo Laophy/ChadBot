@@ -20,7 +20,7 @@ module.exports = {
       profileRow.forEach((profile) => {
         if (profile.userID == userID) {
           coins = parseInt(profile.coins);
-          let randomBeg = Math.floor(Math.random() * 100);
+          let randomBeg = Math.floor(Math.random() * 170);
           coins = coins + randomBeg;
 
           const begEmbed = new Discord.MessageEmbed()

@@ -13,13 +13,19 @@ module.exports = async (Discord, args, client, message) => {
   var profileData;
 
   profileData = connection_db.query(
-    `FIND * FROM user_profile WHERE userID=${message.author.id}`
+    `SELECT * FROM user_profile WHERE userID='${message.author.id}'`,
+    (err, userProfiles) => {
+      userProfiles.forEach((user) => {
+        message.channel.send("Has a profile");
+      });
+    }
   );
 
   if (!profileData) {
     console.log(`No profile data found... for ${message.author.id}`);
   }
 };
+
 const commandFiles = fs
   .readdirSync("./commands/")
   .filter((file) => file.endsWith(".js"));
@@ -43,7 +49,13 @@ client.on("message", (message) => {
   if (command === "profile") {
     client.commands.get("profile").execute(message, args, Discord);
   }
-  if (command === "stats" || command === "stat" || command === "health") {
+  if (
+    command === "stats" ||
+    command === "stat" ||
+    command === "health" ||
+    command === "level" ||
+    command === "levels"
+  ) {
     client.commands.get("stats").execute(message, args, Discord);
   }
   if (command === "bank" || command === "b" || command === "banks") {
@@ -78,6 +90,18 @@ client.on("message", (message) => {
   }
   if (command === "give") {
     client.commands.get("give").execute(message, args, Discord);
+  }
+  if (command === "withdraw") {
+    client.commands.get("withdraw").execute(message, args, Discord);
+  }
+  if (command === "deposit") {
+    client.commands.get("deposit").execute(message, args, Discord);
+  }
+  if (command === "fish") {
+    client.commands.get("fish").execute(message, args, Discord);
+  }
+  if (command === "leaderboard" || command === "lb") {
+    client.commands.get("leaderboard").execute(message, args, Discord);
   }
 });
 
