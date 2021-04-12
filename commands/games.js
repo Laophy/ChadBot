@@ -15,6 +15,11 @@ module.exports = {
       .addFields(
         { name: "Dice Over or Under 50.", value: "=dice", inline: true },
         { name: "Attack mobs", value: "=attack", inline: true },
+        {
+          name: "Catch fish for money(Need fishing pole)",
+          value: "=fish",
+          inline: true,
+        },
         { name: "Get help....", value: "=help", inline: true }
       )
       .setImage(
